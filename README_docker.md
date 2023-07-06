@@ -19,43 +19,40 @@ mysql
     ```
     git clone https://github.com/morihagi/docker_rails_new_mysql.git
     ```
-4. Dockerコンテナを作る
-    ```
-    docker compose build
-    ```
 5. rails new
     ```
-    docker compose run web rails new . --force --database=mysql --skip-test --skip-bundle
+    docker compose run --no-deps web rails new . --force --database=mysql --skip-test --skip-bundle
     ```
-    ここでdbのコンテナが起動します。新たなWebコンテナが起動しますが、無視します。メインのコンテナの中で開発に入れたら削除してOKです。
-6. gemのインストール
+    新しくコンテナが起動して勝手に止まります。メインのコンテナの中に入れたら削除してOKです。
+6. ファイルに下記を追記
     ```
-    docker compose run web bundle install --path vendor/bundle
-    ```
-    ここで新たなWebコンテナが起動しますが、無視します。メインのコンテナの中で開発に入れたら削除してOK。
-7. アプリ内にデータベースを作る
-    ```
-    # config/database.ymlに以下を追記
+    # config/database.yml
         username: root
         password: password
         host: db
     ```
+8.  gemのインストール
     ```
-    docker compose run web rails db:create
+    docker compose run --no-deps web bundle install
     ```
-1. Webコンテナを起動
+    新しくコンテナが起動して勝手に止まります。メインのコンテナの中に入れたら削除してOKです。
+9. Dockerコンテナを作る&起動
     ```
-    docker compose up -d
+    docker compose up --build
     ```
-
-2.  Dockerコンテナに入り、開発を進める
+    この時点から`http://localhost:3000/`にアクセスできます
+10. Dockerコンテナに入る
     ```
     docker compose exec web bash
     ```
     root@なんちゃらかんちゃら:/app#みたいなのが表示されればコンテナに入れてます
-
-3.   その他
-
+11. コンテナの中から開発を進める
+    ```
+    root@なんちゃらかんちゃら:/app# rails db:create
+    root@なんちゃらかんちゃら:/app# bundle install
+    ```
+    このようにいつものrailsのコマンドが使えます
+12.  その他
      - コンテナ内のコマンド例
         ```
         root@なんちゃらかんちゃら:/app# rails db:create
