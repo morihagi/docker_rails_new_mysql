@@ -17,7 +17,7 @@ mysql
     ```
 3. アプリのリポジトリに下記をgit clone
     ```
-    git clone https://github.com/morihagi/docker_rails_new_sqlite3.git
+    git clone https://github.com/morihagi/docker_rails_new_mysql.git
     ```
 4. Dockerコンテナを作る
     ```
